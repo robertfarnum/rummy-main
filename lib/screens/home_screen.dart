@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   
   void _managePlayersScreen() async {
-    final result = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const PlayerManagementScreen(),
       ),
@@ -132,6 +132,53 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadSavedData();
   }
 
+  void _showScoringInfo() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Gin Rummy Scoring Types'),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Text(
+                'Knock',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'When a player knocks, they end the round with 10 or fewer points of deadwood. '
+                'The knocker scores the difference between their deadwood and the opponent\'s deadwood. '
+                'If the opponent has less deadwood, they "undercut" and score a bonus.',
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Gin',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'When a player has no deadwood (all cards are in melds), they go "gin". '
+                'They receive a 25 point bonus plus the value of the opponent\'s deadwood.',
+              ),
+              SizedBox(height: 16),
+              Text(
+                'NOTE: In this app, selecting "Gin" automatically adds 25 bonus points to the score you enter.',
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('CLOSE'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,6 +186,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Gin Rummy Scorekeeper'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: _showScoringInfo,
+            tooltip: 'Scoring Information',
+          ),
           IconButton(
             icon: const Icon(Icons.people),
             onPressed: _managePlayersScreen,

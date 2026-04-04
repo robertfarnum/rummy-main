@@ -40,6 +40,18 @@ class Game {
     });
     saveCurrentGame();
   }
+  
+  // New method to add a round with score types
+  void addRoundWithTypes(Map<String, Map<String, dynamic>> scoreData) {
+    currentRound++;
+    scoreData.forEach((playerName, data) {
+      final player = players.firstWhere((p) => p.name == playerName);
+      final score = data['score'] as int;
+      final scoreType = data['type'] as String;
+      player.addPointsWithType(score, scoreType);
+    });
+    saveCurrentGame();
+  }
 
   bool isGameFinished() {
     return players.any((player) => player.score >= targetScore);
@@ -159,6 +171,116 @@ class Game {
     
     history.removeAt(index);
     return await prefs.setStringList('game_history', history);
+  }
+
+  // Export all game history as a JSON string
+  static Future<String> exportGameHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final history = prefs.getStringList('game_history') ?? [];
+    
+    // Create a JSON object with version info and the history array
+    final exportData = {
+      'version': '1.0',
+      'exportDate': DateTime.now().toIso8601String(),
+      'games': history.map((gameJson) => jsonDecode(gameJson)).toList(),
+    };
+    
+    // Convert to pretty-printed JSON
+    return const JsonEncoder.withIndent('  ').convert(exportData);
+  }
+  
+  // Import game history from JSON string
+  static Future<int> importGameHistory(String jsonData) async {
+    try {
+      // Validate the data format
+      if (!isValidGameHistoryJson(jsonData)) {
+        throw FormatException('Invalid game history format');
+      }
+      
+      // Parse the JSON
+      final Map<String, dynamic> importData = jsonDecode(jsonData);
+      final List<dynamic> games = importData['games'];
+      
+      // Get existing history
+      final prefs = await SharedPreferences.getInstance();
+      final history = prefs.getStringList('game_history') ?? [];
+      
+      // Convert current history to game objects for duplicate checking
+      final existingGames = history.map((json) => jsonDecode(json)).toList();
+      
+      // Add each game to history if it's not a duplicate
+      int importCount = 0;
+      for (final game in games) {
+        try {
+          // Check if this game already exists
+          bool isDuplicate = existingGames.any((existing) {
+            // Compare essential properties to detect duplicates
+            // This is a simplistic approach; a more robust solution might be needed
+            return existing['startTime'] == game['startTime'] &&
+                   existing['targetScore'] == game['targetScore'] &&
+                   existing['currentRound'] == game['currentRound'];
+          });
+          
+          if (!isDuplicate) {
+            // Convert to JSON string for storage
+            final gameJson = jsonEncode(game);
+            history.add(gameJson);
+            importCount++;
+          }
+        } catch (e) {
+          print('Error importing individual game: $e');
+          // Skip invalid games
+        }
+      }
+      
+      // Save updated history
+      await prefs.setStringList('game_history', history);
+      
+      return importCount;
+    } catch (e) {
+      print('Error importing game history: $e');
+      return 0;
+    }
+  }
+
+  // Validate if a string is valid game history JSON
+  static bool isValidGameHistoryJson(String jsonData) {
+    try {
+      final Map<String, dynamic> data = jsonDecode(jsonData);
+      
+      // Check for games array
+      if (!data.containsKey('games') || data['games'] is! List) {
+        return false;
+      }
+      
+      // Check version compatibility if needed
+      if (data.containsKey('version')) {
+        final version = data['version'];
+        // For now we only have version 1.0, but in the future we can check for compatibility
+        if (version != '1.0') {
+          print('Warning: Importing from unknown version: $version');
+        }
+      }
+      
+      // Check each game in the array
+      final games = data['games'] as List;
+      for (final game in games) {
+        if (game is! Map<String, dynamic>) {
+          return false;
+        }
+        
+        // Check required game properties
+        if (!game.containsKey('players') || !game.containsKey('targetScore') || 
+            !game.containsKey('currentRound')) {
+          return false;
+        }
+      }
+      
+      return true;
+    } catch (e) {
+      print('Error validating game history JSON: $e');
+      return false;
+    }
   }
 
   void addPlayer(Player player) {

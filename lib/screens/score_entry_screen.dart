@@ -13,6 +13,8 @@ class ScoreEntryScreen extends StatefulWidget {
 class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
   final Map<String, TextEditingController> _controllers = {};
   final Map<String, FocusNode> _focusNodes = {};
+  // Added map to track score types for each player
+  final Map<String, String> _scoreTypes = {};
   
   @override
   void initState() {
@@ -20,6 +22,7 @@ class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
     for (final player in widget.players) {
       _controllers[player.name] = TextEditingController(text: '0');
       _focusNodes[player.name] = FocusNode();
+      _scoreTypes[player.name] = 'knock'; // Default to knock instead of regular
     }
     
     // Auto-focus the first player's text field after the screen renders
@@ -67,33 +70,71 @@ class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
                   final player = widget.players[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            player.name,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: TextField(
-                            controller: _controllers[player.name],
-                            focusNode: _focusNodes[player.name],
-                            decoration: const InputDecoration(
-                              labelText: 'Points',
-                              border: OutlineInputBorder(),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                player.name,
+                                style: const TextStyle(fontSize: 16),
+                              ),
                             ),
-                            keyboardType: TextInputType.number,
-                            onTap: () {
-                              // Select all text when the field is tapped
-                              _controllers[player.name]?.selection = TextSelection(
-                                baseOffset: 0,
-                                extentOffset: _controllers[player.name]!.text.length,
-                              );
-                            },
-                          ),
+                            Expanded(
+                              flex: 3,
+                              child: TextField(
+                                controller: _controllers[player.name],
+                                focusNode: _focusNodes[player.name],
+                                decoration: const InputDecoration(
+                                  labelText: 'Points',
+                                  border: OutlineInputBorder(),
+                                ),
+                                keyboardType: TextInputType.number,
+                                onTap: () {
+                                  // Select all text when the field is tapped
+                                  _controllers[player.name]?.selection = TextSelection(
+                                    baseOffset: 0,
+                                    extentOffset: _controllers[player.name]!.text.length,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        // Add score type selection (removed regular option)
+                        Row(
+                          children: [
+                            Radio<String>(
+                              value: 'knock',
+                              groupValue: _scoreTypes[player.name],
+                              onChanged: (value) {
+                                setState(() {
+                                  _scoreTypes[player.name] = value!;
+                                });
+                              },
+                            ),
+                            const Text('Knock'),
+                            Radio<String>(
+                              value: 'gin',
+                              groupValue: _scoreTypes[player.name],
+                              onChanged: (value) {
+                                setState(() {
+                                  _scoreTypes[player.name] = value!;
+                                  // Show a message when gin is selected
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('25 bonus points will be added for Gin'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                });
+                              },
+                            ),
+                            const Text('Gin (+25)'),
+                          ],
                         ),
                       ],
                     ),
@@ -115,7 +156,7 @@ class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
   }
 
   void _saveScores() {
-    final scores = <String, int>{};
+    final scoreData = <String, Map<String, dynamic>>{};
     
     bool isValid = true;
     
@@ -132,11 +173,21 @@ class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
         break;
       }
       
-      scores[player.name] = score;
+      // Get the score type
+      final scoreType = _scoreTypes[player.name] ?? 'knock';
+      
+      // Add automatic bonus for gin
+      final finalScore = (scoreType == 'gin') ? score + 25 : score;
+      
+      // Store both score and score type
+      scoreData[player.name] = {
+        'score': finalScore,
+        'type': scoreType,
+      };
     }
     
     if (isValid) {
-      Navigator.of(context).pop(scores);
+      Navigator.of(context).pop(scoreData);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter valid scores for all players')),

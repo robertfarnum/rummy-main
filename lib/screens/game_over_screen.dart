@@ -102,12 +102,31 @@ class GameOverScreen extends StatelessWidget {
         final player = sortedPlayers[index];
         final isWinner = game.getWinners().contains(player);
         
+        // Calculate score stats
+        int ginCount = 0;
+        int knockCount = 0;
+        int regularCount = 0;
+        
+        for (int i = 0; i < player.scoreTypes.length; i++) {
+          switch (player.scoreTypes[i]) {
+            case 'gin':
+              ginCount++;
+              break;
+            case 'knock':
+              knockCount++;
+              break;
+            case 'regular':
+              regularCount++;
+              break;
+          }
+        }
+        
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 4),
           color: isWinner 
               ? Theme.of(context).colorScheme.secondaryContainer 
               : null,
-          child: ListTile(
+          child: ExpansionTile(
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               child: Text(
@@ -125,12 +144,63 @@ class GameOverScreen extends StatelessWidget {
             ),
             trailing: Text(
               '${player.score}',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Regular rounds: $regularCount'),
+                        if (regularCount > 0)
+                          Text('${_getScoreByType(player, 'regular')} pts'),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Knock rounds: $knockCount'),
+                        if (knockCount > 0)
+                          Text('${_getScoreByType(player, 'knock')} pts', 
+                              style: TextStyle(color: Colors.blueAccent)),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Gin rounds: $ginCount'),
+                        if (ginCount > 0)
+                          Text('${_getScoreByType(player, 'gin')} pts', 
+                              style: TextStyle(color: Colors.greenAccent.shade700)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
     );
+  }
+  
+  // Helper method to calculate total score by type
+  int _getScoreByType(Player player, String scoreType) {
+    int totalScore = 0;
+    
+    for (int i = 0; i < player.scoreTypes.length; i++) {
+      if (player.scoreTypes[i] == scoreType) {
+        totalScore += player.gameScores[i];
+      }
+    }
+    
+    return totalScore;
   }
 
   void _startNewGame(BuildContext context) {
