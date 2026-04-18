@@ -105,7 +105,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       // Share the file
       await Share.shareXFiles(
         [XFile(filePath)],
-        text: 'Rummy Scorekeeper Game History (${gameCount} games)',
+        text: 'Rummy Scorekeeper Game History ($gameCount games)',
         subject: 'Rummy Game History Export',
       );
       
@@ -415,7 +415,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             // Expanded game details
                             if (_expandedGames[index]!)
                               Container(
-                                color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                                color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -450,7 +450,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Text('Knock: ', style: TextStyle(color: Colors.blueAccent)),
+                                                    const Text('Knock: ', style: TextStyle(color: Colors.blueAccent)),
                                                     Text('${scoreTypeCounts['knock']} rounds'),
                                                     const SizedBox(width: 8),
                                                     Text('(${_getScoreByType(player, 'knock')} pts)'),

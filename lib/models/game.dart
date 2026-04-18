@@ -194,7 +194,7 @@ class Game {
     try {
       // Validate the data format
       if (!isValidGameHistoryJson(jsonData)) {
-        throw FormatException('Invalid game history format');
+        throw const FormatException('Invalid game history format');
       }
       
       // Parse the JSON

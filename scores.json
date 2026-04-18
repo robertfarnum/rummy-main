@@ -1,0 +1,1196 @@
+{
+  "version": "1.0",
+  "exportDate": "2025-03-03T07:21:38.477591",
+  "games": [
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 36,
+          "gameScores": [
+            36,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 122,
+          "gameScores": [
+            0,
+            38,
+            29,
+            55
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-04-18T19:32:24.619293",
+      "endTime": "2025-04-18T19:47:42.245240"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 118,
+          "gameScores": [
+            37,
+            0,
+            25,
+            0,
+            56
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 92,
+          "gameScores": [
+            0,
+            55,
+            0,
+            37,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 5,
+      "startTime": "2025-04-18T19:48:12.499912",
+      "endTime": "2025-04-18T20:09:32.046500"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 127,
+          "gameScores": [
+            49,
+            33,
+            45
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-04-18T20:09:36.687574",
+      "endTime": "2025-04-18T20:25:15.345714"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 35,
+          "gameScores": [
+            0,
+            0,
+            35,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 116,
+          "gameScores": [
+            42,
+            49,
+            0,
+            25
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-04-19T12:24:12.055318",
+      "endTime": "2025-04-19T12:39:16.363048"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 139,
+          "gameScores": [
+            25,
+            46,
+            68
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-04-19T12:39:27.432350",
+      "endTime": "2025-04-19T12:54:47.456761"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 121,
+          "gameScores": [
+            0,
+            0,
+            35,
+            0,
+            86
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 97,
+          "gameScores": [
+            34,
+            36,
+            0,
+            27,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 5,
+      "startTime": "2025-04-19T12:39:22.665636",
+      "endTime": "2025-04-19T14:01:38.107496"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 113,
+          "gameScores": [
+            28,
+            28,
+            29,
+            28
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-04-20T16:04:49.669950",
+      "endTime": "2025-04-20T16:21:58.807198"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 145,
+          "gameScores": [
+            89,
+            0,
+            0,
+            56
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 56,
+          "gameScores": [
+            0,
+            28,
+            28,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-04-20T16:22:27.990497",
+      "endTime": "2025-04-20T16:43:06.055786"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 115,
+          "gameScores": [
+            35,
+            29,
+            26,
+            0,
+            25
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 42,
+          "gameScores": [
+            0,
+            0,
+            0,
+            42,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 5,
+      "startTime": "2025-04-20T16:52:29.678831",
+      "endTime": "2025-04-20T19:32:28.801533"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 123,
+          "gameScores": [
+            65,
+            25,
+            0,
+            33
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 50,
+          "gameScores": [
+            0,
+            0,
+            50,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 1,
+      "startTime": "2025-04-20T19:58:54.477518",
+      "endTime": "2025-04-20T19:58:58.693474"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 114,
+          "gameScores": [
+            0,
+            28,
+            0,
+            31,
+            55
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 68,
+          "gameScores": [
+            38,
+            0,
+            30,
+            0,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 5,
+      "startTime": "2025-04-20T19:59:12.852264",
+      "endTime": "2025-04-20T20:25:39.809185"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 109,
+          "gameScores": [
+            40,
+            38,
+            31
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 30,
+          "gameScores": [
+            0,
+            30,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-04-21T18:23:27.584066",
+      "endTime": "2025-04-21T18:39:18.490399"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 97,
+          "gameScores": [
+            0,
+            55,
+            42,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 116,
+          "gameScores": [
+            33,
+            0,
+            0,
+            30,
+            25,
+            2,
+            26
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 7,
+      "startTime": "2025-04-21T18:39:25.640650",
+      "endTime": "2025-04-21T19:14:53.610310"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 65,
+          "gameScores": [
+            0,
+            65,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 104,
+          "gameScores": [
+            76,
+            0,
+            28
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-04-28T16:27:03.179698",
+      "endTime": "2025-04-28T16:37:38.079601"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 122,
+          "gameScores": [
+            30,
+            0,
+            39,
+            53
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 24,
+          "gameScores": [
+            0,
+            24,
+            0,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-04-28T16:37:47.210732",
+      "endTime": "2025-04-28T16:56:13.963317"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 109,
+          "gameScores": [
+            0,
+            27,
+            27,
+            0,
+            30,
+            0,
+            25
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 65,
+          "gameScores": [
+            27,
+            0,
+            0,
+            33,
+            0,
+            5,
+            0
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 7,
+      "startTime": "2025-04-28T16:56:22.386120",
+      "endTime": "2025-05-24T22:12:37.035375"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 30,
+          "gameScores": [
+            0,
+            30,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 123,
+          "gameScores": [
+            63,
+            0,
+            33,
+            27
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-05-24T22:12:51.527216",
+      "endTime": "2025-05-24T22:38:11.596961"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 5,
+          "gameScores": [
+            0,
+            5,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 100,
+          "gameScores": [
+            39,
+            0,
+            29,
+            32
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-05-24T22:45:12.160163",
+      "endTime": "2025-05-24T23:02:55.091596"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 141,
+          "gameScores": [
+            42,
+            34,
+            65
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-05-24T23:03:15.000646",
+      "endTime": "2025-05-24T23:23:35.362499"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 117,
+          "gameScores": [
+            0,
+            44,
+            25,
+            0,
+            48
+          ],
+          "scoreTypes": [
+            "knock",
+            "gin",
+            "gin",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 90,
+          "gameScores": [
+            40,
+            0,
+            0,
+            50,
+            0
+          ],
+          "scoreTypes": [
+            "gin",
+            "knock",
+            "knock",
+            "gin",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 5,
+      "startTime": "2025-06-08T21:32:27.601077",
+      "endTime": "2025-06-08T21:53:54.998862"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 121,
+          "gameScores": [
+            66,
+            55
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 2,
+      "startTime": "2025-06-08T21:54:03.962917",
+      "endTime": "2025-06-08T22:08:27.147171"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 111,
+          "gameScores": [
+            33,
+            32,
+            0,
+            46
+          ],
+          "scoreTypes": [
+            "knock",
+            "gin",
+            "knock",
+            "gin"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 41,
+          "gameScores": [
+            0,
+            0,
+            41,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "knock",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-06-08T22:08:35.831156",
+      "endTime": "2025-06-08T22:29:51.260465"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 104,
+          "gameScores": [
+            45,
+            33,
+            26
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-06-08T22:29:58.847551",
+      "endTime": "2025-06-08T22:51:01.547609"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 102,
+          "gameScores": [
+            0,
+            0,
+            66,
+            36
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "gin",
+            "gin"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 68,
+          "gameScores": [
+            43,
+            25,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "knock",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-06-08T22:58:16.921572",
+      "endTime": "2025-06-08T23:16:26.766760"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 89,
+          "gameScores": [
+            42,
+            25,
+            22,
+            0,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "knock",
+            "knock",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 106,
+          "gameScores": [
+            0,
+            0,
+            0,
+            43,
+            36,
+            27
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "knock",
+            "gin",
+            "gin",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 6,
+      "startTime": "2025-06-29T06:52:00.529486",
+      "endTime": "2025-06-29T07:21:09.278846"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 26,
+          "gameScores": [
+            0,
+            26,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "gin",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 117,
+          "gameScores": [
+            27,
+            0,
+            62,
+            28
+          ],
+          "scoreTypes": [
+            "gin",
+            "knock",
+            "gin",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-07-01T08:57:41.285364",
+      "endTime": "2025-07-01T09:15:09.648065"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 72,
+          "gameScores": [
+            34,
+            0,
+            0,
+            38,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "gin",
+            "knock",
+            "knock",
+            "knock",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 112,
+          "gameScores": [
+            0,
+            27,
+            28,
+            0,
+            28,
+            29
+          ],
+          "scoreTypes": [
+            "knock",
+            "gin",
+            "gin",
+            "knock",
+            "gin",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 6,
+      "startTime": "2025-07-01T09:15:24.651239",
+      "endTime": "2025-07-01T09:47:28.117092"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 94,
+          "gameScores": [
+            0,
+            39,
+            0,
+            10,
+            45,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "gin",
+            "knock",
+            "knock",
+            "gin",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 102,
+          "gameScores": [
+            31,
+            0,
+            37,
+            0,
+            0,
+            31,
+            3
+          ],
+          "scoreTypes": [
+            "gin",
+            "knock",
+            "gin",
+            "knock",
+            "knock",
+            "gin",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 7,
+      "startTime": "2025-07-01T09:50:39.358466",
+      "endTime": "2025-07-01T10:40:45.141395"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 117,
+          "gameScores": [
+            33,
+            36,
+            26,
+            22
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "gin",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-09-01T07:57:09.518063",
+      "endTime": "2025-09-01T08:09:44.262"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 123,
+          "gameScores": [
+            32,
+            57,
+            34
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "gin"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2025-09-01T08:09:54.366352",
+      "endTime": "2025-09-01T08:28:22.713390"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 46,
+          "gameScores": [
+            0,
+            0,
+            46,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "gin",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 114,
+          "gameScores": [
+            32,
+            25,
+            0,
+            57
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "knock",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-09-01T08:28:30.251346",
+      "endTime": "2025-09-01T08:53:13.846626"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 125,
+          "gameScores": [
+            46,
+            79
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 2,
+      "startTime": "2025-09-01T08:53:23.592817",
+      "endTime": "2025-09-01T09:07:47.520218"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 124,
+          "gameScores": [
+            62,
+            26,
+            0,
+            36
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "knock",
+            "gin"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 76,
+          "gameScores": [
+            0,
+            0,
+            76,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "gin",
+            "knock"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 4,
+      "startTime": "2025-09-01T09:08:01.788240",
+      "endTime": "2025-09-01T09:32:35.594813"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 0,
+          "gameScores": [
+            0,
+            0,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 116,
+          "gameScores": [
+            34,
+            48,
+            36
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 3,
+      "startTime": "2026-03-21T16:53:23.592817",
+      "endTime": "2025-03-21T17:07:47.520218"
+    },
+    {
+      "players": [
+        {
+          "name": "Jannine",
+          "score": 76,
+          "gameScores": [
+            0,
+            0,
+            39,
+            37,
+            0
+          ],
+          "scoreTypes": [
+            "knock",
+            "knock",
+            "gin",
+            "gin",
+            "knock"
+          ]
+        },
+        {
+          "name": "Robert",
+          "score": 106,
+          "gameScores": [
+            28,
+            33,
+            0,
+            0,
+	          45
+          ],
+          "scoreTypes": [
+            "gin",
+            "gin",
+            "knock",
+            "knock",
+            "gin"
+          ]
+        }
+      ],
+      "targetScore": 100,
+      "currentRound": 5,
+      "startTime": "2026-03-21T17:07:23.592817",
+      "endTime": "2025-03-21T17:20:47.520218"
+    }
+  ]
+}

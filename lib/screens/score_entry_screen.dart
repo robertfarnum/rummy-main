@@ -40,8 +40,12 @@ class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
 
   @override
   void dispose() {
-    _controllers.values.forEach((controller) => controller.dispose());
-    _focusNodes.values.forEach((focusNode) => focusNode.dispose());
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    for (var focusNode in _focusNodes.values) {
+      focusNode.dispose();
+    }
     super.dispose();
   }
 

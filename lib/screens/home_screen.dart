@@ -137,11 +137,11 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Gin Rummy Scoring Types'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               Text(
                 'Knock',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           labelText: 'Select Player',
                                           border: OutlineInputBorder(),
                                         ),
-                                        value: _savedPlayerNames.isNotEmpty ? _savedPlayerNames[0] : null,
+                                        initialValue: _savedPlayerNames.isNotEmpty ? _savedPlayerNames[0] : null,
                                         items: _savedPlayerNames.map((name) {
                                           return DropdownMenuItem(
                                             value: name,

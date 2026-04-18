@@ -167,7 +167,7 @@ class GameOverScreen extends StatelessWidget {
                         Text('Knock rounds: $knockCount'),
                         if (knockCount > 0)
                           Text('${_getScoreByType(player, 'knock')} pts', 
-                              style: TextStyle(color: Colors.blueAccent)),
+                              style: const TextStyle(color: Colors.blueAccent)),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -207,7 +207,7 @@ class GameOverScreen extends StatelessWidget {
     game.resetGame();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => HomeScreen(),
+        builder: (context) => const HomeScreen(),
       ),
     );
   }
@@ -215,7 +215,7 @@ class GameOverScreen extends StatelessWidget {
   void _backToHome(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => HomeScreen(),
+        builder: (context) => const HomeScreen(),
       ),
       (route) => false,
     );

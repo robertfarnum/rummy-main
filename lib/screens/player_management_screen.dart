@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/player.dart';
 import '../models/game.dart';
 
 class PlayerManagementScreen extends StatefulWidget {
