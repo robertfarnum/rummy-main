@@ -192,36 +192,29 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   const SizedBox(height: 16),
                   const Text('Score Type:'),
-                  Row(
-                    children: [
-                      Radio<String>(
-                        value: 'knock',
-                        groupValue: scoreType,
-                        onChanged: (value) {
-                          setState(() => scoreType = value!);
-                        },
-                      ),
-                      const Text('Knock'),
-                      Radio<String>(
-                        value: 'gin',
-                        groupValue: scoreType,
-                        onChanged: (value) {
-                          setState(() {
-                            scoreType = value!;
-                            // If Gin is selected, show info about automatic bonus
-                            if (scoreType == 'gin') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('25 bonus points will be added for Gin'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          });
-                        },
-                      ),
-                      const Text('Gin (+25)'),
-                    ],
+                  RadioGroup<String>(
+                    groupValue: scoreType,
+                    onChanged: (value) {
+                      setState(() {
+                        scoreType = value!;
+                        if (scoreType == 'gin') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('25 bonus points will be added for Gin'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                    child: const Row(
+                      children: [
+                        Radio<String>(value: 'knock'),
+                        Text('Knock'),
+                        Radio<String>(value: 'gin'),
+                        Text('Gin (+25)'),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -340,36 +333,29 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   const SizedBox(height: 16),
                   const Text('Score Type:'),
-                  Row(
-                    children: [
-                      Radio<String>(
-                        value: 'knock',
-                        groupValue: scoreType,
-                        onChanged: (value) {
-                          setState(() => scoreType = value!);
-                        },
-                      ),
-                      const Text('Knock'),
-                      Radio<String>(
-                        value: 'gin',
-                        groupValue: scoreType,
-                        onChanged: (value) {
-                          setState(() {
-                            scoreType = value!;
-                            // If Gin is selected, show info about automatic bonus
-                            if (scoreType == 'gin') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('25 bonus points will be added for Gin'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          });
-                        },
-                      ),
-                      const Text('Gin (+25)'),
-                    ],
+                  RadioGroup<String>(
+                    groupValue: scoreType,
+                    onChanged: (value) {
+                      setState(() {
+                        scoreType = value!;
+                        if (scoreType == 'gin') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('25 bonus points will be added for Gin'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                    child: const Row(
+                      children: [
+                        Radio<String>(value: 'knock'),
+                        Text('Knock'),
+                        Radio<String>(value: 'gin'),
+                        Text('Gin (+25)'),
+                      ],
+                    ),
                   ),
                 ],
               ),

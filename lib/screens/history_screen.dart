@@ -69,9 +69,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         _loadGameHistory();
         
         // Show a snackbar confirmation
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Game deleted from history')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Game deleted from history')),
+          );
+        }
       }
     }
   }
@@ -118,9 +120,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
       });
       
       // Show error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error exporting game history: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error exporting game history: $e')),
+        );
+      }
     }
   }
 
@@ -173,9 +177,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         
         // Skip if no path (web platform) or empty path
         if (filePath == null || filePath.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not access the file path')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Could not access the file path')),
+            );
+          }
           setState(() {
             _isExporting = false;
           });
@@ -188,9 +194,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         
         // Validate the JSON format
         if (!Game.isValidGameHistoryJson(jsonData)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Invalid game history file format')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Invalid game history file format')),
+            );
+          }
           setState(() {
             _isExporting = false;
           });
@@ -205,13 +213,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
         
         // Show appropriate message based on import count
         if (importCount > 0) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$importCount ${importCount == 1 ? "game" : "games"} imported successfully')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$importCount ${importCount == 1 ? "game" : "games"} imported successfully')),
+            );
+          }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No new games found to import')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('No new games found to import')),
+            );
+          }
         }
       }
       
@@ -223,9 +235,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         _isExporting = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error importing game history: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error importing game history: $e')),
+        );
+      }
     }
   }
 
@@ -415,7 +429,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             // Expanded game details
                             if (_expandedGames[index]!)
                               Container(
-                                color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                                color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

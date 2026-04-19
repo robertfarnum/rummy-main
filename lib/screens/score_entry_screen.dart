@@ -109,36 +109,29 @@ class _ScoreEntryScreenState extends State<ScoreEntryScreen> {
                         ),
                         const SizedBox(height: 8),
                         // Add score type selection (removed regular option)
-                        Row(
-                          children: [
-                            Radio<String>(
-                              value: 'knock',
-                              groupValue: _scoreTypes[player.name],
-                              onChanged: (value) {
-                                setState(() {
-                                  _scoreTypes[player.name] = value!;
-                                });
-                              },
-                            ),
-                            const Text('Knock'),
-                            Radio<String>(
-                              value: 'gin',
-                              groupValue: _scoreTypes[player.name],
-                              onChanged: (value) {
-                                setState(() {
-                                  _scoreTypes[player.name] = value!;
-                                  // Show a message when gin is selected
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('25 bonus points will be added for Gin'),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                });
-                              },
-                            ),
-                            const Text('Gin (+25)'),
-                          ],
+                        RadioGroup<String>(
+                          groupValue: _scoreTypes[player.name]!,
+                          onChanged: (value) {
+                            setState(() {
+                              _scoreTypes[player.name] = value!;
+                              if (value == 'gin') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('25 bonus points will be added for Gin'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            });
+                          },
+                          child: const Row(
+                            children: [
+                              Radio<String>(value: 'knock'),
+                              Text('Knock'),
+                              Radio<String>(value: 'gin'),
+                              Text('Gin (+25)'),
+                            ],
+                          ),
                         ),
                       ],
                     ),

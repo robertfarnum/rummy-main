@@ -73,7 +73,7 @@ class _PlayerManagementScreenState extends State<PlayerManagementScreen> {
     }
 
     // Save the updated list
-    final prefs = await Game.savePlayerNamesList(_savedPlayerNames);
+    await Game.savePlayerNamesList(_savedPlayerNames);
     
     _nameController.clear();
   }
@@ -91,7 +91,7 @@ class _PlayerManagementScreenState extends State<PlayerManagementScreen> {
     });
 
     // Save the updated list
-    final prefs = await Game.savePlayerNamesList(_savedPlayerNames);
+    await Game.savePlayerNamesList(_savedPlayerNames);
   }
 
   @override

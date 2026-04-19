@@ -1,19 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:rummy_scorekeeper/models/game.dart';
 import 'package:rummy_scorekeeper/models/player.dart';
 
-@GenerateMocks([SharedPreferences])
-import 'game_test.mocks.dart';
-
 void main() {
-  late MockSharedPreferences mockPrefs;
-
   setUp(() {
-    mockPrefs = MockSharedPreferences();
     SharedPreferences.setMockInitialValues({});
   });
 
@@ -32,8 +24,8 @@ void main() {
     test('Game.fromJson creates correct game object', () {
       final jsonData = {
         'players': [
-          {'name': 'Player 1', 'score': 50},
-          {'name': 'Player 2', 'score': 75}
+          {'name': 'Player 1', 'score': 50, 'gameScores': [50], 'scoreTypes': ['regular']},
+          {'name': 'Player 2', 'score': 75, 'gameScores': [75], 'scoreTypes': ['regular']}
         ],
         'targetScore': 150,
         'currentRound': 3,
@@ -79,18 +71,16 @@ void main() {
   });
 
   group('Game logic', () {
-    test('addRound increments round and updates scores', () {
+    test('addRound increments round and updates scores', () async {
+      SharedPreferences.setMockInitialValues({});
       final players = [
         Player(name: 'Player 1'),
         Player(name: 'Player 2')
       ];
       final game = Game(players: players);
-      
-      // Mock saveCurrentGame to avoid actual SharedPreferences calls
-      game.saveCurrentGame = () async {};
-      
+
       game.addRound({'Player 1': 10, 'Player 2': 20});
-      
+
       expect(game.currentRound, 1);
       expect(players[0].score, 10);
       expect(players[1].score, 20);
@@ -102,7 +92,7 @@ void main() {
         Player(name: 'Player 2')..addPoints(50)
       ];
       final game = Game(players: players, targetScore: 100);
-      
+
       expect(game.isGameFinished(), true);
     });
 
@@ -113,9 +103,9 @@ void main() {
         Player(name: 'Player 3')..addPoints(50)
       ];
       final game = Game(players: players, targetScore: 100);
-      
+
       final winners = game.getWinners();
-      
+
       expect(winners.length, 2);
       expect(winners[0].name, 'Player 1');
       expect(winners[1].name, 'Player 2');
@@ -124,80 +114,50 @@ void main() {
 
   group('Storage operations', () {
     test('savePlayerNames combines existing and new names', () async {
-      when(mockPrefs.getStringList('player_names'))
-          .thenReturn(['Alice', 'Bob']);
-      when(mockPrefs.setStringList('player_names', any))
-          .thenAnswer((_) async => true);
+      SharedPreferences.setMockInitialValues({
+        'player_names': ['Alice', 'Bob'],
+      });
 
       final players = [
         Player(name: 'Bob'),
         Player(name: 'Charlie')
       ];
       final game = Game(players: players);
-      
-      // Replace the static method with a mock implementation for testing
-      Game.getSavedPlayerNames = () async => ['Alice', 'Bob'];
-      
-      // Mock the instance method to use our mock
-      game.savePlayerNames = () async {
-        final savedNames = await Game.getSavedPlayerNames();
-        final currentNames = game.players.map((p) => p.name).toList();
-        final allNames = {...savedNames, ...currentNames}.toList();
-        await mockPrefs.setStringList('player_names', allNames);
-      };
-      
+
       await game.savePlayerNames();
-      
-      verify(mockPrefs.setStringList('player_names', ['Alice', 'Bob', 'Charlie']));
+
+      final prefs = await SharedPreferences.getInstance();
+      final savedNames = prefs.getStringList('player_names')!;
+      expect(savedNames, containsAll(['Alice', 'Bob', 'Charlie']));
+      expect(savedNames.length, 3);
     });
-    
+
     test('loadCurrentGame returns null when no game exists', () async {
-      when(mockPrefs.getString('current_game')).thenReturn(null);
-      
-      // Replace static method with mock implementation
-      Game.loadCurrentGame = () async {
-        final gameJson = mockPrefs.getString('current_game');
-        if (gameJson != null) {
-          try {
-            return Game.fromJson(jsonDecode(gameJson));
-          } catch (e) {
-            return null;
-          }
-        }
-        return null;
-      };
-      
+      SharedPreferences.setMockInitialValues({});
+
       final game = await Game.loadCurrentGame();
-      
+
       expect(game, isNull);
     });
   });
 
   group('Game history management', () {
     test('deleteGameFromHistory removes a game from history', () async {
-      // Setup mock SharedPreferences
-      final List<String> mockHistory = [
-        '{"players":[{"name":"Player 1","score":50,"gameScores":[10,20,20]}],"targetScore":100,"currentRound":3,"startTime":"2023-01-01T10:00:00.000Z","endTime":"2023-01-01T11:00:00.000Z"}',
-        '{"players":[{"name":"Player 2","score":80,"gameScores":[30,50]}],"targetScore":100,"currentRound":2,"startTime":"2023-01-02T10:00:00.000Z","endTime":"2023-01-02T11:00:00.000Z"}'
+      final history = [
+        '{"players":[{"name":"Player 1","score":50,"gameScores":[10,20,20],"scoreTypes":["regular","regular","regular"]}],"targetScore":100,"currentRound":3,"startTime":"2023-01-01T10:00:00.000Z","endTime":"2023-01-01T11:00:00.000Z"}',
+        '{"players":[{"name":"Player 2","score":80,"gameScores":[30,50],"scoreTypes":["regular","regular"]}],"targetScore":100,"currentRound":2,"startTime":"2023-01-02T10:00:00.000Z","endTime":"2023-01-02T11:00:00.000Z"}'
       ];
-      
-      when(mockPrefs.getStringList('game_history')).thenReturn(mockHistory);
-      when(mockPrefs.setStringList('game_history', any)).thenAnswer((_) async => true);
-      
-      // Replace the static method with mock implementation
-      Game.deleteGameFromHistory = (int index) async {
-        final history = mockPrefs.getStringList('game_history') ?? [];
-        if (index >= 0 && index < history.length) {
-          history.removeAt(index);
-          await mockPrefs.setStringList('game_history', history);
-        }
-      };
-      
+
+      SharedPreferences.setMockInitialValues({
+        'game_history': history,
+      });
+
       await Game.deleteGameFromHistory(0);
-      
-      verify(mockPrefs.setStringList('game_history', [
-        '{"players":[{"name":"Player 2","score":80,"gameScores":[30,50]}],"targetScore":100,"currentRound":2,"startTime":"2023-01-02T10:00:00.000Z","endTime":"2023-01-02T11:00:00.000Z"}'
-      ]));
+
+      final prefs = await SharedPreferences.getInstance();
+      final remaining = prefs.getStringList('game_history')!;
+      expect(remaining.length, 1);
+      expect(jsonDecode(remaining[0])['players'][0]['name'], 'Player 2');
     });
   });
 }

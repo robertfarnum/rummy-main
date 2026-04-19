@@ -4,6 +4,7 @@ import '../models/game.dart';
 import 'game_screen.dart';
 import 'history_screen.dart';
 import 'player_management_screen.dart';
+import 'rules_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -96,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Save initial game state
     await game.saveCurrentGame();
     
+    if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GameScreen(game: game),
@@ -132,50 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadSavedData();
   }
 
-  void _showScoringInfo() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Gin Rummy Scoring Types'),
-        content: const SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Knock',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'When a player knocks, they end the round with 10 or fewer points of deadwood. '
-                'The knocker scores the difference between their deadwood and the opponent\'s deadwood. '
-                'If the opponent has less deadwood, they "undercut" and score a bonus.',
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Gin',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'When a player has no deadwood (all cards are in melds), they go "gin". '
-                'They receive a 25 point bonus plus the value of the opponent\'s deadwood.',
-              ),
-              SizedBox(height: 16),
-              Text(
-                'NOTE: In this app, selecting "Gin" automatically adds 25 bonus points to the score you enter.',
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('CLOSE'),
-          ),
-        ],
-      ),
+  void _openRulesScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RulesScreen()),
     );
   }
 
@@ -188,8 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
-            onPressed: _showScoringInfo,
-            tooltip: 'Scoring Information',
+            onPressed: _openRulesScreen,
+            tooltip: 'How to Play',
           ),
           IconButton(
             icon: const Icon(Icons.people),
@@ -205,149 +167,160 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Saved game card (only show if a saved game exists)
-                  if (_savedGame != null) ...[
-                    Card(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const Text(
-                              'Continue Saved Game',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+          : Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Saved game card (only show if a saved game exists)
+                        if (_savedGame != null) ...[
+                          Card(
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const Text(
+                                    'Continue Saved Game',
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Round: ${_savedGame!.currentRound} | Target: ${_savedGame!.targetScore}',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Players: ${_savedGame!.players.map((p) => p.name).join(", ")}',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton(
+                                    onPressed: _continueGame,
+                                    child: const Text('Continue Game'),
+                                  ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Round: ${_savedGame!.currentRound} | Target: ${_savedGame!.targetScore}',
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Players: ${_savedGame!.players.map((p) => p.name).join(", ")}',
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _continueGame,
-                              child: const Text('Continue Game'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'New Game',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                  
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                          ),
+                          const SizedBox(height: 16),
                           const Text(
-                            'Game Setup',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
+                            'New Game',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _savedPlayerNames.isNotEmpty
-                                    ? DropdownButtonFormField<String>(
-                                        decoration: const InputDecoration(
-                                          labelText: 'Select Player',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        initialValue: _savedPlayerNames.isNotEmpty ? _savedPlayerNames[0] : null,
-                                        items: _savedPlayerNames.map((name) {
-                                          return DropdownMenuItem(
-                                            value: name,
-                                            child: Text(name),
-                                          );
-                                        }).toList(),
-                                        onChanged: (value) {
-                                          if (value != null) {
-                                            setState(() {
-                                              _nameController.text = value;
-                                            });
-                                          }
-                                        },
-                                      )
-                                    : TextField(
-                                        controller: _nameController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Player Name',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        onSubmitted: (_) => _addPlayer(),
-                                      ),
-                              ),
-                              const SizedBox(width: 8),
-                              ElevatedButton(
-                                onPressed: _addPlayer,
-                                child: const Text('Add'),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          TextField(
-                            controller: _targetScoreController,
-                            decoration: const InputDecoration(
-                              labelText: 'Target Score',
-                              border: OutlineInputBorder(),
-                            ),
-                            keyboardType: TextInputType.number,
-                          ),
+                          const SizedBox(height: 8),
                         ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Players',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child: _players.isEmpty
-                        ? const Center(child: Text('No players added yet'))
-                        : ListView.builder(
-                            itemCount: _players.length,
-                            itemBuilder: (context, index) {
-                              final player = _players[index];
-                              return ListTile(
-                                title: Text(player.name),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () => _removePlayer(index),
+                        
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const Text(
+                                  'Game Setup',
+                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
                                 ),
-                              );
-                            },
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _savedPlayerNames.isNotEmpty
+                                          ? DropdownButtonFormField<String>(
+                                              decoration: const InputDecoration(
+                                                labelText: 'Select Player',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              initialValue: _savedPlayerNames.isNotEmpty ? _savedPlayerNames[0] : null,
+                                              items: _savedPlayerNames.map((name) {
+                                                return DropdownMenuItem(
+                                                  value: name,
+                                                  child: Text(name),
+                                                );
+                                              }).toList(),
+                                              onChanged: (value) {
+                                                if (value != null) {
+                                                  setState(() {
+                                                    _nameController.text = value;
+                                                  });
+                                                }
+                                              },
+                                            )
+                                          : TextField(
+                                              controller: _nameController,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Player Name',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              onSubmitted: (_) => _addPlayer(),
+                                            ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ElevatedButton(
+                                      onPressed: _addPlayer,
+                                      child: const Text('Add'),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                TextField(
+                                  controller: _targetScoreController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Target Score',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ],
+                            ),
                           ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _players.length >= 2 ? _startGame : null,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Players',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        if (_players.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24),
+                            child: Center(child: Text('No players added yet')),
+                          )
+                        else
+                          ...List.generate(_players.length, (index) {
+                            final player = _players[index];
+                            return ListTile(
+                              title: Text(player.name),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () => _removePlayer(index),
+                              ),
+                            );
+                          }),
+                      ],
                     ),
-                    child: const Text('Start New Game', style: TextStyle(fontSize: 18)),
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _players.length >= 2 ? _startGame : null,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: const Text('Start New Game', style: TextStyle(fontSize: 18)),
+                    ),
+                  ),
+                ),
+              ],
             ),
     );
   }

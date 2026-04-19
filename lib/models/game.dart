@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'player.dart';
 
@@ -114,7 +115,7 @@ class Game {
       try {
         return Game.fromJson(jsonDecode(gameJson));
       } catch (e) {
-        print('Error loading current game: $e');
+        debugPrint('Error loading current game: $e');
         return null;
       }
     }
@@ -130,7 +131,7 @@ class Game {
       try {
         return Game.fromJson(jsonDecode(gameJson));
       } catch (e) {
-        print('Error loading game from history: $e');
+        debugPrint('Error loading game from history: $e');
         return null;
       }
     }).whereType<Game>().toList();
@@ -228,7 +229,7 @@ class Game {
             importCount++;
           }
         } catch (e) {
-          print('Error importing individual game: $e');
+          debugPrint('Error importing individual game: $e');
           // Skip invalid games
         }
       }
@@ -238,7 +239,7 @@ class Game {
       
       return importCount;
     } catch (e) {
-      print('Error importing game history: $e');
+      debugPrint('Error importing game history: $e');
       return 0;
     }
   }
@@ -258,7 +259,7 @@ class Game {
         final version = data['version'];
         // For now we only have version 1.0, but in the future we can check for compatibility
         if (version != '1.0') {
-          print('Warning: Importing from unknown version: $version');
+          debugPrint('Warning: Importing from unknown version: $version');
         }
       }
       
@@ -278,7 +279,7 @@ class Game {
       
       return true;
     } catch (e) {
-      print('Error validating game history JSON: $e');
+      debugPrint('Error validating game history JSON: $e');
       return false;
     }
   }
