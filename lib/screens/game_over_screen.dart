@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/game.dart';
+import '../models/game_config.dart';
 import '../models/player.dart';
 import 'home_screen.dart';
 
@@ -92,9 +93,14 @@ class GameOverScreen extends StatelessWidget {
   }
 
   Widget _buildFinalStandings() {
-    // Sort players by score (highest first)
-    final sortedPlayers = List<Player>.from(game.players)
-      ..sort((a, b) => b.score.compareTo(a.score));
+    final gameConfig = game.gameConfig;
+    // Sort players based on win condition
+    final sortedPlayers = List<Player>.from(game.players);
+    if (gameConfig.winCondition == WinCondition.lowest) {
+      sortedPlayers.sort((a, b) => a.score.compareTo(b.score));
+    } else {
+      sortedPlayers.sort((a, b) => b.score.compareTo(a.score));
+    }
     
     return ListView.builder(
       itemCount: sortedPlayers.length,
@@ -102,23 +108,14 @@ class GameOverScreen extends StatelessWidget {
         final player = sortedPlayers[index];
         final isWinner = game.getWinners().contains(player);
         
-        // Calculate score stats
-        int ginCount = 0;
-        int knockCount = 0;
-        int regularCount = 0;
-        
+        // Calculate score stats dynamically from game config
+        final gameConfig = game.gameConfig;
+        final typeCounts = <String, int>{};
+        for (final st in gameConfig.scoreTypes) {
+          typeCounts[st.id] = 0;
+        }
         for (int i = 0; i < player.scoreTypes.length; i++) {
-          switch (player.scoreTypes[i]) {
-            case 'gin':
-              ginCount++;
-              break;
-            case 'knock':
-              knockCount++;
-              break;
-            case 'regular':
-              regularCount++;
-              break;
-          }
+          typeCounts[player.scoreTypes[i]] = (typeCounts[player.scoreTypes[i]] ?? 0) + 1;
         }
         
         return Card(
@@ -151,36 +148,20 @@ class GameOverScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Regular rounds: $regularCount'),
-                        if (regularCount > 0)
-                          Text('${_getScoreByType(player, 'regular')} pts'),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Knock rounds: $knockCount'),
-                        if (knockCount > 0)
-                          Text('${_getScoreByType(player, 'knock')} pts', 
-                              style: const TextStyle(color: Colors.blueAccent)),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Gin rounds: $ginCount'),
-                        if (ginCount > 0)
-                          Text('${_getScoreByType(player, 'gin')} pts', 
-                              style: TextStyle(color: Colors.greenAccent.shade700)),
-                      ],
-                    ),
-                  ],
+                  children: gameConfig.scoreTypes.map((st) {
+                    final count = typeCounts[st.id] ?? 0;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('${st.label} rounds: $count'),
+                          if (count > 0)
+                            Text('${_getScoreByType(player, st.id)} pts'),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'game_config.dart';
 import 'player.dart';
 
 class Game {
@@ -9,8 +10,12 @@ class Game {
   int currentRound;
   DateTime? startTime;
   DateTime? endTime;
+  String gameType;
+  int? saveIndex;
+
+  GameConfig get gameConfig => GameConfig.findById(gameType);
   
-  Game({required this.players, this.targetScore = 100}) 
+  Game({required this.players, this.targetScore = 100, this.gameType = 'gin-rummy'}) 
     : currentRound = 0,
       startTime = DateTime.now();
 
@@ -20,7 +25,8 @@ class Game {
         targetScore = json['targetScore'],
         currentRound = json['currentRound'],
         startTime = json['startTime'] != null ? DateTime.parse(json['startTime']) : null,
-        endTime = json['endTime'] != null ? DateTime.parse(json['endTime']) : null;
+        endTime = json['endTime'] != null ? DateTime.parse(json['endTime']) : null,
+        gameType = json['gameType'] as String? ?? 'gin-rummy';
 
   // Convert game to JSON for storage
   Map<String, dynamic> toJson() {
@@ -30,6 +36,7 @@ class Game {
       'currentRound': currentRound,
       'startTime': startTime?.toIso8601String(),
       'endTime': endTime?.toIso8601String(),
+      'gameType': gameType,
     };
   }
 
@@ -39,7 +46,7 @@ class Game {
       final player = players.firstWhere((p) => p.name == playerName);
       player.addPoints(score);
     });
-    saveCurrentGame();
+    saveGame();
   }
   
   // New method to add a round with score types
@@ -51,28 +58,40 @@ class Game {
       final scoreType = data['type'] as String;
       player.addPointsWithType(score, scoreType);
     });
-    saveCurrentGame();
+    saveGame();
   }
 
   bool isGameFinished() {
+    if (!gameConfig.hasTargetScore) return false;
+    if (gameConfig.winCondition == WinCondition.lowest) {
+      return currentRound >= targetScore; // for Golf, targetScore acts as round count
+    }
     return players.any((player) => player.score >= targetScore);
   }
 
   List<Player> getWinners() {
     if (!isGameFinished()) return [];
-    
-    final highestScore = players.map((p) => p.score).reduce(
-      (value, element) => value > element ? value : element
-    );
-    
-    return players.where((p) => p.score == highestScore).toList();
+
+    switch (gameConfig.winCondition) {
+      case WinCondition.highest:
+      case WinCondition.winLoss:
+        final highestScore = players.map((p) => p.score).reduce(
+          (value, element) => value > element ? value : element
+        );
+        return players.where((p) => p.score == highestScore).toList();
+      case WinCondition.lowest:
+        final lowestScore = players.map((p) => p.score).reduce(
+          (value, element) => value < element ? value : element
+        );
+        return players.where((p) => p.score == lowestScore).toList();
+    }
   }
 
   void finishGame() {
     if (isGameFinished() && endTime == null) {
       endTime = DateTime.now();
       saveGameHistory();
-      saveCurrentGame();
+      saveGame();
     }
   }
 
@@ -83,13 +102,23 @@ class Game {
     currentRound = 0;
     startTime = DateTime.now();
     endTime = null;
-    saveCurrentGame();
+    saveGame();
   }
 
-  // Save current game state to SharedPreferences
-  Future<void> saveCurrentGame() async {
+  static const int maxSavedGames = 10;
+
+  Future<void> saveGame() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('current_game', jsonEncode(toJson()));
+    final savedGames = prefs.getStringList('saved_games') ?? [];
+    final json = jsonEncode(toJson());
+    if (saveIndex != null && saveIndex! < savedGames.length) {
+      savedGames[saveIndex!] = json;
+    } else {
+      if (savedGames.length >= maxSavedGames) return;
+      savedGames.add(json);
+      saveIndex = savedGames.length - 1;
+    }
+    await prefs.setStringList('saved_games', savedGames);
   }
 
   // Save completed game to history
@@ -106,20 +135,40 @@ class Game {
     await prefs.setStringList('game_history', history);
   }
 
-  // Load current game from SharedPreferences
-  static Future<Game?> loadCurrentGame() async {
+  static Future<List<Game>> loadAllSavedGames() async {
     final prefs = await SharedPreferences.getInstance();
-    final gameJson = prefs.getString('current_game');
-    
-    if (gameJson != null) {
-      try {
-        return Game.fromJson(jsonDecode(gameJson));
-      } catch (e) {
-        debugPrint('Error loading current game: $e');
-        return null;
+    var savedGames = prefs.getStringList('saved_games') ?? [];
+
+    // Migrate from old single-game format
+    if (savedGames.isEmpty) {
+      final legacy = prefs.getString('current_game');
+      if (legacy != null) {
+        savedGames = [legacy];
+        await prefs.setStringList('saved_games', savedGames);
+        await prefs.remove('current_game');
       }
     }
-    return null;
+
+    final games = <Game>[];
+    for (var i = 0; i < savedGames.length; i++) {
+      try {
+        final game = Game.fromJson(jsonDecode(savedGames[i]));
+        game.saveIndex = i;
+        games.add(game);
+      } catch (e) {
+        debugPrint('Error loading saved game $i: $e');
+      }
+    }
+    return games;
+  }
+
+  static Future<void> deleteSavedGame(int index) async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedGames = prefs.getStringList('saved_games') ?? [];
+    if (index >= 0 && index < savedGames.length) {
+      savedGames.removeAt(index);
+      await prefs.setStringList('saved_games', savedGames);
+    }
   }
 
   // Load game history from SharedPreferences

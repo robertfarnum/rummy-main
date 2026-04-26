@@ -132,12 +132,12 @@ void main() {
       expect(savedNames.length, 3);
     });
 
-    test('loadCurrentGame returns null when no game exists', () async {
+    test('loadAllSavedGames returns empty list when no games exist', () async {
       SharedPreferences.setMockInitialValues({});
 
-      final game = await Game.loadCurrentGame();
+      final games = await Game.loadAllSavedGames();
 
-      expect(game, isNull);
+      expect(games, isEmpty);
     });
   });
 

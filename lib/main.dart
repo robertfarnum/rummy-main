@@ -11,7 +11,7 @@ class RummyScoreApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gin Rummy Scorekeeper',
+      title: 'Card Game Scorekeeper',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,

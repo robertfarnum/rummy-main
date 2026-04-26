@@ -124,41 +124,43 @@ class _GameScreenState extends State<GameScreen> {
 
   // Helper method to get the appropriate score type color
   Color _getScoreTypeColor(Player player, int index, BuildContext context) {
-    if (index >= player.scoreTypes.length) return Colors.blueAccent.shade100; // Default to knock color
+    if (index >= player.scoreTypes.length) return Theme.of(context).colorScheme.primaryContainer;
 
-    switch (player.scoreTypes[index]) {
-      case 'regular': // Keep support for legacy data
-        return Theme.of(context).colorScheme.primaryContainer;
-      case 'knock':
-        return Colors.blueAccent.shade100;
-      case 'gin':
-        return Colors.greenAccent.shade100;
-      default:
-        return Colors.blueAccent.shade100; // Default to knock color
+    final scoreTypeId = player.scoreTypes[index];
+    final gameConfig = widget.game.gameConfig;
+    final stIndex = gameConfig.scoreTypes.indexWhere((st) => st.id == scoreTypeId);
+    
+    // Use a set of distinct colors based on score type index
+    const colors = [Colors.blueAccent, Colors.greenAccent, Colors.orangeAccent, Colors.purpleAccent];
+    if (stIndex >= 0 && stIndex < colors.length) {
+      return colors[stIndex].shade100;
     }
+    return Theme.of(context).colorScheme.primaryContainer;
   }
 
   // Helper method to get a suffix for the score based on type
   String _getScoreTypeSuffix(Player player, int index) {
     if (index >= player.scoreTypes.length) return '';
 
-    switch (player.scoreTypes[index]) {
-      case 'regular': // Keep support for legacy data
-        return '';
-      case 'knock':
-        return ' (K)';
-      case 'gin':
-        return ' (G+25)'; // Make it clear there's a +25 bonus
-      default:
-        return '';
+    final scoreTypeId = player.scoreTypes[index];
+    final gameConfig = widget.game.gameConfig;
+    final st = gameConfig.scoreTypes.where((s) => s.id == scoreTypeId).firstOrNull;
+    if (st == null) return '';
+    
+    if (st.bonusPoints > 0) {
+      return ' (${st.label.substring(0, 1)}+${st.bonusPoints})';
     }
+    if (gameConfig.scoreTypes.length > 1) {
+      return ' (${st.label.substring(0, 1)})';
+    }
+    return '';
   }
 
   void _enterPlayerScore(Player player) async {
+    final gameConfig = widget.game.gameConfig;
     final TextEditingController scoreController = TextEditingController(text: '0');
-    String scoreType = 'knock'; // Default score type (now using knock as default instead of regular)
+    String scoreType = gameConfig.scoreTypes.first.id;
     
-    // We need this to ensure the selection happens after the text field is rendered
     void selectAllText() {
       scoreController.selection = TextSelection(
         baseOffset: 0,
@@ -169,7 +171,6 @@ class _GameScreenState extends State<GameScreen> {
     final result = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (context) {
-        // Schedule the selection to happen after the dialog is shown
         WidgetsBinding.instance.addPostFrameCallback((_) => selectAllText());
         
         return StatefulBuilder(
@@ -190,32 +191,33 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     onTap: selectAllText,
                   ),
-                  const SizedBox(height: 16),
-                  const Text('Score Type:'),
-                  RadioGroup<String>(
-                    groupValue: scoreType,
-                    onChanged: (value) {
-                      setState(() {
-                        scoreType = value!;
-                        if (scoreType == 'gin') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('25 bonus points will be added for Gin'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      });
-                    },
-                    child: const Row(
-                      children: [
-                        Radio<String>(value: 'knock'),
-                        Text('Knock'),
-                        Radio<String>(value: 'gin'),
-                        Text('Gin (+25)'),
-                      ],
-                    ),
-                  ),
+                  if (gameConfig.scoreTypes.length > 1) ...[
+                    const SizedBox(height: 16),
+                    const Text('Score Type:'),
+                    ...gameConfig.scoreTypes.map((st) {
+                      return RadioListTile<String>(
+                        title: Text(
+                          st.bonusPoints > 0 ? '${st.label} (+${st.bonusPoints})' : st.label,
+                        ),
+                        value: st.id,
+                        groupValue: scoreType,
+                        dense: true,
+                        onChanged: (value) {
+                          setState(() {
+                            scoreType = value!;
+                            if (st.bonusPoints > 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('${st.bonusPoints} bonus points will be added for ${st.label}'),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          });
+                        },
+                      );
+                    }),
+                  ],
                 ],
               ),
               actions: [
@@ -250,22 +252,24 @@ class _GameScreenState extends State<GameScreen> {
     if (result != null) {
       final scoreData = <String, Map<String, dynamic>>{};
       
-      // Add the score for this player, with automatic bonus for gin
       final scoreValue = result['score'] as int;
-      final scoreType = result['type'] as String;
-      final finalScore = (scoreType == 'gin') ? scoreValue + 25 : scoreValue;
+      final resultType = result['type'] as String;
+      final st = gameConfig.scoreTypes.firstWhere(
+        (s) => s.id == resultType,
+        orElse: () => gameConfig.scoreTypes.first,
+      );
+      final finalScore = scoreValue + st.bonusPoints;
       
       scoreData[player.name] = {
         'score': finalScore,
-        'type': scoreType,
+        'type': resultType,
       };
       
-      // Set score of 0 for all other players in this round
       for (final p in widget.game.players) {
         if (p.name != player.name) {
           scoreData[p.name] = {
             'score': 0,
-            'type': 'knock', // Updated default from regular to knock
+            'type': gameConfig.scoreTypes.first.id,
           };
         }
       }
@@ -289,17 +293,17 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _editRoundScore(Player player, int roundIndex) async {
-    // If this was a gin round, we need to adjust the displayed score (subtract 25)
-    final currentScoreType = roundIndex < player.scoreTypes.length ? player.scoreTypes[roundIndex] : 'knock';
+    final gameConfig = widget.game.gameConfig;
+    final currentScoreType = roundIndex < player.scoreTypes.length ? player.scoreTypes[roundIndex] : gameConfig.scoreTypes.first.id;
     final displayedScore = player.gameScores[roundIndex];
     
-    // For gin rounds, subtract the 25 bonus points from the display to show original value
-    final adjustedScoreForDisplay = currentScoreType == 'gin' ? displayedScore - 25 : displayedScore;
+    // For score types with bonuses, subtract bonus for display
+    final st = gameConfig.scoreTypes.where((s) => s.id == currentScoreType).firstOrNull;
+    final adjustedScoreForDisplay = (st != null && st.bonusPoints > 0) ? displayedScore - st.bonusPoints : displayedScore;
     
     final TextEditingController scoreController = TextEditingController(text: adjustedScoreForDisplay.toString());
     String scoreType = currentScoreType;
     
-    // We need this to ensure the selection happens after the text field is rendered
     void selectAllText() {
       scoreController.selection = TextSelection(
         baseOffset: 0,
@@ -310,7 +314,6 @@ class _GameScreenState extends State<GameScreen> {
     final result = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (context) {
-        // Schedule the selection to happen after the dialog is shown
         WidgetsBinding.instance.addPostFrameCallback((_) => selectAllText());
         
         return StatefulBuilder(
@@ -331,32 +334,33 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     onTap: selectAllText,
                   ),
-                  const SizedBox(height: 16),
-                  const Text('Score Type:'),
-                  RadioGroup<String>(
-                    groupValue: scoreType,
-                    onChanged: (value) {
-                      setState(() {
-                        scoreType = value!;
-                        if (scoreType == 'gin') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('25 bonus points will be added for Gin'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      });
-                    },
-                    child: const Row(
-                      children: [
-                        Radio<String>(value: 'knock'),
-                        Text('Knock'),
-                        Radio<String>(value: 'gin'),
-                        Text('Gin (+25)'),
-                      ],
-                    ),
-                  ),
+                  if (gameConfig.scoreTypes.length > 1) ...[
+                    const SizedBox(height: 16),
+                    const Text('Score Type:'),
+                    ...gameConfig.scoreTypes.map((scoreSt) {
+                      return RadioListTile<String>(
+                        title: Text(
+                          scoreSt.bonusPoints > 0 ? '${scoreSt.label} (+${scoreSt.bonusPoints})' : scoreSt.label,
+                        ),
+                        value: scoreSt.id,
+                        groupValue: scoreType,
+                        dense: true,
+                        onChanged: (value) {
+                          setState(() {
+                            scoreType = value!;
+                            if (scoreSt.bonusPoints > 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('${scoreSt.bonusPoints} bonus points will be added for ${scoreSt.label}'),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          });
+                        },
+                      );
+                    }),
+                  ],
                 ],
               ),
               actions: [
@@ -390,20 +394,19 @@ class _GameScreenState extends State<GameScreen> {
 
     if (result != null) {
       setState(() {
-        // Get the entered score and type
         final scoreValue = result['score'] as int;
-        final scoreType = result['type'] as String;
+        final resultType = result['type'] as String;
         
-        // Add automatic bonus for gin
-        final finalScore = (scoreType == 'gin') ? scoreValue + 25 : scoreValue;
+        // Apply bonus from config
+        final editSt = gameConfig.scoreTypes.firstWhere(
+          (s) => s.id == resultType,
+          orElse: () => gameConfig.scoreTypes.first,
+        );
+        final finalScore = scoreValue + editSt.bonusPoints;
         
-        // Use the new editRoundScoreWithType method to properly update the score and type
-        player.editRoundScoreWithType(roundIndex, finalScore, scoreType);
+        player.editRoundScoreWithType(roundIndex, finalScore, resultType);
+        widget.game.saveGame();
         
-        // Save the updated game state
-        widget.game.saveCurrentGame();
-        
-        // Check if game is finished after score update
         if (widget.game.isGameFinished()) {
           _showGameOverScreen();
         }
