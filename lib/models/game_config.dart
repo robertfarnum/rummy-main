@@ -7,6 +7,14 @@ import '../screens/slapjack_rules_screen.dart';
 import '../screens/war_rules_screen.dart';
 import '../screens/double_solitaire_rules_screen.dart';
 import '../screens/crazy_eights_rules_screen.dart';
+import '../screens/spades_rules_screen.dart';
+import '../screens/hearts_rules_screen.dart';
+import '../screens/euchre_rules_screen.dart';
+import '../screens/go_fish_rules_screen.dart';
+import '../screens/rummy_rules_screen.dart';
+import '../screens/canasta_rules_screen.dart';
+import '../screens/pinochle_rules_screen.dart';
+import '../screens/bridge_rules_screen.dart';
 
 enum WinCondition { highest, lowest, winLoss }
 
@@ -133,6 +141,92 @@ class GameConfig {
       winCondition: WinCondition.highest,
       hasTargetScore: true,
       rulesScreenBuilder: () => const CrazyEightsRulesScreen(),
+    ),
+    GameConfig(
+      id: 'spades',
+      name: 'Spades',
+      minPlayers: 4,
+      maxPlayers: 4,
+      defaultTargetScore: 500,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: true,
+      rulesScreenBuilder: () => const SpadesRulesScreen(),
+    ),
+    GameConfig(
+      id: 'hearts',
+      name: 'Hearts',
+      minPlayers: 3,
+      maxPlayers: 6,
+      defaultTargetScore: 100,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.lowest,
+      hasTargetScore: true,
+      rulesScreenBuilder: () => const HeartsRulesScreen(),
+    ),
+    GameConfig(
+      id: 'euchre',
+      name: 'Euchre',
+      minPlayers: 4,
+      maxPlayers: 4,
+      defaultTargetScore: 10,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: true,
+      rulesScreenBuilder: () => const EuchreRulesScreen(),
+    ),
+    GameConfig(
+      id: 'go-fish',
+      name: 'Go Fish',
+      minPlayers: 2,
+      maxPlayers: 6,
+      scoreTypes: const [ScoreType('books', 'Books Collected')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: false,
+      rulesScreenBuilder: () => const GoFishRulesScreen(),
+    ),
+    GameConfig(
+      id: 'rummy',
+      name: 'Rummy',
+      minPlayers: 2,
+      maxPlayers: 6,
+      defaultTargetScore: 100,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: true,
+      rulesScreenBuilder: () => const RummyRulesScreen(),
+    ),
+    GameConfig(
+      id: 'canasta',
+      name: 'Canasta',
+      minPlayers: 4,
+      maxPlayers: 4,
+      defaultTargetScore: 5000,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: true,
+      rulesScreenBuilder: () => const CanastaRulesScreen(),
+    ),
+    GameConfig(
+      id: 'pinochle',
+      name: 'Pinochle',
+      minPlayers: 4,
+      maxPlayers: 4,
+      defaultTargetScore: 1500,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: true,
+      rulesScreenBuilder: () => const PinochleRulesScreen(),
+    ),
+    GameConfig(
+      id: 'bridge',
+      name: 'Bridge',
+      minPlayers: 4,
+      maxPlayers: 4,
+      scoreTypes: const [ScoreType('points', 'Points')],
+      winCondition: WinCondition.highest,
+      hasTargetScore: false,
+      rulesScreenBuilder: () => const BridgeRulesScreen(),
     ),
   ];
 }

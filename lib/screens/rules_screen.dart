@@ -243,6 +243,105 @@ class RulesScreen extends StatelessWidget {
               ],
             ),
 
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 20, 16, 4),
+              child: Row(
+                children: [
+                  Expanded(child: Divider(thickness: 1)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'COMPLETE OFFICIAL RULES',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Divider(thickness: 1)),
+                ],
+              ),
+            ),
+            ExpansionTile(
+              title: Text('The Deal & First Turn', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Players: 2. Use a standard 52-card deck.\n\n'
+                    'Deal 10 cards to each player. Place the remaining cards face-down as the '
+                    'stock. Turn the top card face-up beside it to start the discard pile.\n\n'
+                    'The non-dealer is first offered the upcard. If the non-dealer does not '
+                    'take it, the dealer may take it. If the dealer also declines, the '
+                    'non-dealer draws the top card from the stock and play begins.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Knocking: Official Rules', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'You may knock (end the round) when your unmatched cards ("deadwood") '
+                    'total 10 or fewer points. On your knocking turn, draw a card, form your '
+                    'best melds, and place deadwood + melds on the table.\n\n'
+                    'The opponent then lays off any cards from their hand that extend your melds, '
+                    'then shows their remaining deadwood.\n\n'
+                    'Knocker scores the DIFFERENCE between opponent\'s remaining deadwood and '
+                    'their own deadwood.\n\n'
+                    'Undercut: If the opponent\'s deadwood is equal to or less than the knocker\'s '
+                    'deadwood after layoffs, the opponent scores the difference PLUS a 10-point '
+                    'undercut bonus.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Going Gin: Official Rules', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'If you can meld ALL 10 cards with zero deadwood, you may "go gin." '
+                    'Discard one card (face-down) and lay out all 10 cards in melds.\n\n'
+                    'When you go gin, the opponent may NOT lay off any cards on your melds. '
+                    'The entire value of the opponent\'s hand counts as deadwood.\n\n'
+                    'The gin player scores the opponent\'s full deadwood value PLUS a 20-point '
+                    'gin bonus (the official value per Hoyle / Pagat.com).',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Scoring & Oklahoma Gin', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Scores accumulate across rounds. First to reach 100 points wins.\n\n'
+                    'Game bonus: 100 points added to winner\'s total at game end.\n'
+                    'Line bonus ("box"): 25 points per hand won, added at game end.\n\n'
+                    'Oklahoma Gin variant: The rank of the first face-up discard card '
+                    'sets the knock limit for that round (Ace = must go gin; a 5 = '
+                    'maximum deadwood of 5 to knock). If a spade is turned up, all '
+                    'scores for that hand are doubled.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+
             SizedBox(height: 16),
           ],
         ),

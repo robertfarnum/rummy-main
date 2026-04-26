@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SlapjackRulesScreen extends StatelessWidget {
-  const SlapjackRulesScreen({super.key});
+class GoFishRulesScreen extends StatelessWidget {
+  const GoFishRulesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('How to Play Slapjack'),
+        title: const Text('How to Play Go Fish'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: const SingleChildScrollView(
@@ -20,7 +20,8 @@ class SlapjackRulesScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'Win all the cards by being the first to slap each Jack as it is played.',
+                    'Collect the most sets of four matching cards (books). The player with the '
+                    'most books when all 13 sets are completed wins.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
@@ -33,9 +34,9 @@ class SlapjackRulesScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'Use a standard 52-card deck with 2–8 players. Deal all cards face down as '
-                    'evenly as possible. Players do not look at their cards — they keep them in a '
-                    'face-down pile in front of them.',
+                    'Use a standard 52-card deck with 2–6 players. Deal 7 cards to each player '
+                    '(5 cards each if 4 or more players). Place the remaining cards face down '
+                    'as the "ocean" (draw pile).',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
@@ -48,24 +49,29 @@ class SlapjackRulesScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'Players take turns flipping their top card onto a central pile. When a Jack '
-                    'appears, all players race to slap the pile. The first player to slap the Jack '
-                    'wins the entire pile and adds it to the bottom of their stack. If you slap a '
-                    'card that is not a Jack, you must give one card to the player who played that '
-                    'card. If you run out of cards, you get one chance to slap back in on the next Jack.',
+                    'On your turn, ask any other player for a specific rank (e.g., "Do you have '
+                    'any 7s?"). You must already hold at least one card of that rank.\n\n'
+                    'If the asked player has cards of that rank, they must give all of them to you '
+                    'and you take another turn.\n\n'
+                    'If the asked player has none, they say "Go Fish!" and you draw one card from '
+                    'the ocean. If the drawn card is the rank you asked for, show it and take '
+                    'another turn. Otherwise, play passes left.\n\n'
+                    'When you collect all four cards of a rank (a "book"), place them face-up in '
+                    'front of you.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
               ],
             ),
             ExpansionTile(
-              title: Text('Winning', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              leading: Icon(Icons.emoji_events),
+              title: Text('Scoring', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              leading: Icon(Icons.scoreboard),
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'The game continues until one player has collected all 52 cards. That player wins!',
+                    'The game ends when all 13 books have been completed or a player runs out '
+                    'of cards and the ocean is empty. The player with the most books wins.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
@@ -78,8 +84,8 @@ class SlapjackRulesScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'Since Slapjack has no point system, this app tracks games won per session. '
-                    'After each game, select the winner to record a win.',
+                    'Enter each player\'s number of books collected at the end of the game. '
+                    'The player with the most books wins.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
@@ -107,68 +113,56 @@ class SlapjackRulesScreen extends StatelessWidget {
               ),
             ),
             ExpansionTile(
-              title: Text('The Deal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              title: Text('Setup & Deal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               leading: Icon(Icons.menu_book),
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'Players: 2–8. Use a standard 52-card deck. Shuffle and deal all cards '
-                    'face-down as evenly as possible. Players hold their pile face-down without '
-                    'looking at their cards.',
+                    'Players: 2–6. Use a standard 52-card deck.\n\n'
+                    'Deal cards: 7 cards each with 2 players; 5 cards each with 3–6 players. '
+                    'Place the remaining cards face-down in the center as the "ocean" '
+                    '(or "pond"). Players hold their cards so others cannot see them.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
               ],
             ),
             ExpansionTile(
-              title: Text('The Play', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              title: Text('Taking a Turn', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               leading: Icon(Icons.menu_book),
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'Starting with the player to the left of the dealer, players take turns '
-                    'flipping their top card face-up onto a central pile, one at a time. '
-                    'Cards are placed quickly — the goal is speed and alertness.',
+                    'On your turn, choose any opponent and ask them for a specific rank '
+                    '(e.g., "Do you have any sevens?"). You must already hold at least one '
+                    'card of that rank in your hand.\n\n'
+                    'If the opponent has cards of that rank: they must give you ALL of them. '
+                    'You may then take another turn.\n\n'
+                    'If the opponent has none: they say "Go Fish!" and you draw the top card '
+                    'from the ocean. If the card you draw matches the rank you asked for, '
+                    'show it and take another turn. Otherwise, your turn ends and play '
+                    'passes to the left.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),
               ],
             ),
             ExpansionTile(
-              title: Text('Slapping Rules', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              title: Text('Books & Winning', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               leading: Icon(Icons.menu_book),
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Text(
-                    'When a Jack is placed on the central pile, any player may slap the pile. '
-                    'The first player to slap wins the entire pile and shuffles it into their '
-                    'personal stack.\n\n'
-                    'Wrong slap (slapping a non-Jack): The player who slapped incorrectly must '
-                    'give one card from their pile to the player who played the top card.\n\n'
-                    'Out of cards: A player who runs out of cards gets one final chance to slap '
-                    'back in when the next Jack appears. If they slap first, they are back in the '
-                    'game with the pile. If they miss, they are eliminated.',
-                    style: TextStyle(fontSize: 15, height: 1.5),
-                  ),
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Irish Snap (Variant)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              leading: Icon(Icons.menu_book),
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: Text(
-                    'In Irish Snap, players also slap the pile when:\n'
-                    '• A card matches the rank of the card below it (a pair), OR\n'
-                    '• Cards form a descending sequence (e.g., a 9 is placed on a 10, '
-                    'then an 8 on the 9, etc.)\n\n'
-                    'The player who slaps incorrectly gives a penalty card to the player '
-                    'who played the unslappable card.',
+                    'A "book" is all 4 cards of the same rank (e.g., all four 7s). When '
+                    'you collect all 4 cards of a rank, immediately place them face-up in '
+                    'front of you as a completed book.\n\n'
+                    'The game ends when all 13 books have been completed, OR a player runs '
+                    'out of cards and the ocean is empty. Players who run out of cards '
+                    'during play must draw 1 card from the ocean to continue (if available).\n\n'
+                    'Count books. The player who collected the most books wins.',
                     style: TextStyle(fontSize: 15, height: 1.5),
                   ),
                 ),

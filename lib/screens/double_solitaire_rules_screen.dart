@@ -78,6 +78,98 @@ class DoubleSolitaireRulesScreen extends StatelessWidget {
                 ),
               ],
             ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 20, 16, 4),
+              child: Row(
+                children: [
+                  Expanded(child: Divider(thickness: 1)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'COMPLETE OFFICIAL RULES',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Divider(thickness: 1)),
+                ],
+              ),
+            ),
+            ExpansionTile(
+              title: Text('Setup (Each Player)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Each player uses their own standard 52-card deck — use decks with '
+                    'different back designs to tell them apart.\n\n'
+                    'Each player independently sets up a standard Klondike Solitaire tableau: '
+                    '7 columns with 1, 2, 3, 4, 5, 6, and 7 cards respectively. Only the top '
+                    'card in each column is face-up. The remaining cards form each player\'s '
+                    'face-down stock pile.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Shared Foundation Piles', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'There are 8 shared foundation piles in the center (4 suits × 2 decks). '
+                    'Either player may start a foundation pile by playing an Ace of any suit. '
+                    'Foundations are built up by suit: A → 2 → 3 → ... → K.\n\n'
+                    'IMPORTANT: When two cards of the same suit from different decks are '
+                    'both eligible for the next foundation card, track which pile belongs '
+                    'to which deck by the card backs.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Tableau & Stock Rules', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Tableau rules (Klondike): Build columns downward in alternating red and '
+                    'black rank order. An empty column may only be filled by a King.\n\n'
+                    'Either player may play to any tableau column. If both players try to '
+                    'play the same card to the same spot simultaneously, whoever places '
+                    'their card first claims the spot.\n\n'
+                    'Draw from your own stock pile (typically 3 cards at a time). If the '
+                    'stock is exhausted, flip the discard pile to form a new stock.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Winning', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'The game ends when neither player can make any more moves. Each player '
+                    'counts the cards they contributed to the shared foundations '
+                    '(identified by their deck\'s back design). The player with more '
+                    'foundation cards wins.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

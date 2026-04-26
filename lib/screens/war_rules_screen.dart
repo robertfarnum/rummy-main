@@ -86,6 +86,92 @@ class WarRulesScreen extends StatelessWidget {
                 ),
               ],
             ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 20, 16, 4),
+              child: Row(
+                children: [
+                  Expanded(child: Divider(thickness: 1)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'COMPLETE OFFICIAL RULES',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Divider(thickness: 1)),
+                ],
+              ),
+            ),
+            ExpansionTile(
+              title: Text('Setup', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Players: 2 (adaptable for 3–4). Use a standard 52-card deck. Shuffle and '
+                    'deal all cards face-down as evenly as possible. Players keep cards in a '
+                    'face-down pile without looking at them.\n\n'
+                    'Card rank (high to low): Ace, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2. '
+                    'Suits play no role in determining the winner.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('The Play', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Both players simultaneously turn over the top card of their pile. The player '
+                    'with the higher-ranking card wins both cards and places them face-down at the '
+                    'bottom of their pile. Play continues with the next pair of cards.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('War: Tied Cards', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'When both players reveal cards of equal rank, a "war" occurs:\n\n'
+                    '1. Each player places 3 cards face-down on the table.\n'
+                    '2. Each player turns a 4th card face-up.\n'
+                    '3. The higher face-up card wins all the cards in play.\n'
+                    '4. If the new cards also tie, the war repeats.\n\n'
+                    'If a player cannot produce enough cards to complete the war, they lose immediately.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Variants', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: Icon(Icons.menu_book),
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Text(
+                    'Short War: Place just 1 card face-down (instead of 3) before the battle card.\n\n'
+                    '3–4 Players: Each player flips one card. The highest wins all. If two players '
+                    'tie for the highest, only those two go to war; other players retrieve their cards.',
+                    style: TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

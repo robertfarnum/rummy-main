@@ -160,6 +160,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  List<DropdownMenuItem<GameConfig>> _buildGameDropdownItems() {
+    final twoPlayer = GameConfig.allGames.where((g) => g.maxPlayers == 2).toList();
+    final variable = GameConfig.allGames.where((g) => g.minPlayers < 4 && g.maxPlayers > 2).toList();
+    final fourPlayer = GameConfig.allGames.where((g) => g.minPlayers == 4).toList();
+
+    DropdownMenuItem<GameConfig> header(String label) => DropdownMenuItem<GameConfig>(
+          enabled: false,
+          child: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.grey),
+          ),
+        );
+
+    DropdownMenuItem<GameConfig> item(GameConfig g) => DropdownMenuItem<GameConfig>(
+          value: g,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(g.name),
+          ),
+        );
+
+    return [
+      header('── 2 Players ──'),
+      ...twoPlayer.map(item),
+      header('── 2–8 Players ──'),
+      ...variable.map(item),
+      header('── 4 Players ──'),
+      ...fourPlayer.map(item),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -267,12 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     border: OutlineInputBorder(),
                                   ),
                                   value: _selectedGame,
-                                  items: GameConfig.allGames.map((game) {
-                                    return DropdownMenuItem(
-                                      value: game,
-                                      child: Text(game.name),
-                                    );
-                                  }).toList(),
+                                  items: _buildGameDropdownItems(),
                                   onChanged: (value) {
                                     if (value != null) {
                                       setState(() {
